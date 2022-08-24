@@ -1,10 +1,11 @@
-import './App.css';
+import "./App.css";
+import WalletCard from "./views/WalletCard";
 
 function App() {
   return (
-    <div className="App">
-      <p>Hello One</p>
-    </div>
+    <>
+      <WalletCard />
+    </>
   );
 }
 

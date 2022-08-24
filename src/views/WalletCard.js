@@ -34,12 +34,14 @@ const WalletCard = () => {
     window.location.reload();
   };
 
-  // when change account
-  window.ethereum.on("accountsChanged", accountChangeHandler);
+  if (window.ethereum) {
+    // when change account
+    window.ethereum.on("accountsChanged", accountChangeHandler);
 
-  // when change chain
-  // suggested to relaod the page unless there is a good reason not to
-  window.ethereum.on("chainChanged", chainChangeHandler);
+    // when change chain
+    // suggested to relaod the page unless there is a good reason not to
+    window.ethereum.on("chainChanged", chainChangeHandler);
+  }
 
   return (
     <>

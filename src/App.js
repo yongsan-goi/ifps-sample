@@ -1,5 +1,6 @@
 import "./App.css";
 import WalletCard from "./views/WalletCard";
+import Scan from "./views/Scan";
 import TransferWallet from "./views/TransferWallet";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <>
       <WalletCard />
       <TransferWallet />
+      <Scan />
     </>
   );
 }

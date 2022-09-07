@@ -1,57 +1,56 @@
 import React, { useState } from "react";
 import Web3 from 'web3'
+import * as constant from '../common/constant'
 
-const Scan = () => {
+const ScanPendingTxn = () => {
   const [latestTxnList, setTxnList] = useState([]);
-
   const maxTxnStored: number = 10;
 
-  const apiKey: string = '6e14075f1127445c9334c5dbce70b535';
-  const websocketUri: string = 'wss://rinkeby.infura.io/ws/v3/' + apiKey;
-  const httpsUri: string = 'https://rinkeby.infura.io/v3/' + apiKey;
-
   if (window.ethereum) {
-  	const provider = new Web3.providers.WebsocketProvider(websocketUri);
+  	const provider = new Web3.providers.WebsocketProvider(constant.infura.websocketUri);
     const web3 = new Web3(provider);
     const subscription = web3.eth.subscribe('pendingTransactions');
 
-    subscription.subscribe((error, result) => {
-	    if (error) console.log(error);
-	    // if (result) console.log(result);
-	  })
-	  .on('data', async (txHash) => {
-	    try {
-	      const web3Http = new Web3(httpsUri);
-	      const trx = await web3Http.eth.getTransaction(txHash);
-	      if (trx !== null) {
-	      	trx['hash'] = txHash;
-	      	setLatestTxn(trx);
-	      }
-	      subscription.unsubscribe()
-	    }
-	    catch (error) {
-	      console.log(error)
-	    }
-	  })
-  }
+    if (constant.scanPendingTxn) {
+		subscription
+			.subscribe((error, result) => {
+				if (error) console.log(error);
+				// if (result) console.log(result);
+			})
+			.on('data', async (txHash) => {
+				try {
+					const web3Http = new Web3(constant.infura.httpsUri);
+					const trx = await web3Http.eth.getTransaction(txHash);
+					if (trx !== null) {
+						trx['hash'] = txHash;
+						setLatestTxn(trx);
+					}
+					subscription.unsubscribe()
+				}
+				catch (error) {
+					console.log(error)
+				}
+			})
+		}
+	}
 
   const setLatestTxn = (txn) => {
-  	console.log('txn here', txn);
-  	console.log('latestTxnList', latestTxnList);
+  	// console.log('txn here', txn);
+  	// console.log('latestTxnList', latestTxnList);
 
   	const newArray = latestTxnList.slice();
   	if (newArray.length !== maxTxnStored) {
   		newArray.push(txn);
   		setTxnList(newArray);
   	} else {
-
+  		// TODO: update remove old txn and push new txn
   	}
   }
 
   return (
     <>
       <div className='card-wrapper'>
-        <h4>Connection to MetaMask using Web3 Providers methods</h4>
+        <h4>Using Infura Web3 Providers methods to get Rinkeby chain pending transaction</h4>
       	<table>
 	      	<thead>
 	      		<tr>
@@ -81,4 +80,4 @@ const Scan = () => {
   );
 };
 
-export default Scan;
+export default ScanPendingTxn;

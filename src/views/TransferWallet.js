@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { ethers } from "ethers";
 
 const TransferWallet = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [toAddress, setAddress] = useState('');
   const [amount, setAmount] = useState(0);
-  const [gasFee, setGasFee] = useState(null);
+  // const [gasFee, setGasFee] = useState(null);
 
   const send = async () => {
     if (window.ethereum) {
@@ -15,7 +14,7 @@ const TransferWallet = () => {
 
       window.ethereum
       .request({
-        method: 'eth_sendTransaction',
+        method: 'eth_sendTransaction',  
         params: [
           {
             from: result[0],
@@ -56,7 +55,7 @@ const TransferWallet = () => {
            */}
         
         </div>
-        <p>Yong San Address: 0x72E3D71eE9110BC1a90178FA7aB2C64F8b22d91F</p>
+        <p style={{display: 'none'}}>Yong San Address: 0x72E3D71eE9110BC1a90178FA7aB2C64F8b22d91F</p>
         <button onClick={send}>Send!</button>
         {errorMsg}
       </div>
